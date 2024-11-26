@@ -34,15 +34,30 @@ const WaveBackground = () => {
       canvas.height = window.innerHeight;
     };
 
-    // Initialize waves
     const initWaves = () => {
-      waves = Array.from({ length: 3 }, (_, i) => ({
-        frequency: 0.02 - (i * 0.005),
-        amplitude: 50 + (i * 20),
-        phase: 0,
-        speed: 0.02 + (i * 0.005),
-        color: `rgba(37, 99, 235, ${0.1 - i * 0.02})`
-      }));
+      waves = [
+        {
+          frequency: 0.02,
+          amplitude: 50,
+          phase: 0,
+          speed: 0.02,
+          color: 'rgba(0, 184, 187, 0.1)' // Cyan
+        },
+        {
+          frequency: 0.015,
+          amplitude: 70,
+          phase: 0,
+          speed: 0.025,
+          color: 'rgba(21, 163, 199, 0.08)' // Cyan Blue
+        },
+        {
+          frequency: 0.01,
+          amplitude: 90,
+          phase: 0,
+          speed: 0.03,
+          color: 'rgba(0, 152, 138, 0.06)' // Blue-Green
+        }
+      ];
     };
 
     // Draw single wave
