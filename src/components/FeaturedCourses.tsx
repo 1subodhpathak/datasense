@@ -8,31 +8,36 @@ const FeaturedCourses = () => {
     {
       id: 1,
       title: "Machine Learning",
-      description: "Learn the fundamentals of machine learning and how to build real-world applications.",
+      description:
+        "Learn the fundamentals of machine learning and how to build real-world applications.",
       image: "/assets/courses/data-science.jpg",
     },
     {
       id: 2,
       title: "Data Analytics",
-      description: "Dive into data analysis, visualization, and decision-making with our comprehensive course.",
+      description:
+        "Dive into data analysis, visualization, and decision-making with our comprehensive course.",
       image: "/featured-course-2.jpg",
     },
     {
       id: 3,
       title: "Artificial Intelligence",
-      description: "Explore the world of artificial intelligence and its applications in this advanced course.",
+      description:
+        "Explore the world of artificial intelligence and its applications in this advanced course.",
       image: "/featured-course-3.jpg",
     },
     {
       id: 4,
       title: "Cloud Computing",
-      description: "Learn cloud architecture, services, and management in this beginner-friendly course.",
+      description:
+        "Learn cloud architecture, services, and management in this beginner-friendly course.",
       image: "/featured-course-4.jpg",
     },
     {
       id: 5,
       title: "Web Development",
-      description: "Master front-end and back-end development in our full-stack web development course.",
+      description:
+        "Master front-end and back-end development in our full-stack web development course.",
       image: "/featured-course-5.jpg",
     },
   ];
@@ -40,11 +45,15 @@ const FeaturedCourses = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? courses.length - 1 : prevIndex - 1));
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? courses.length - 1 : prevIndex - 1
+    );
   };
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === courses.length - 1 ? 0 : prevIndex + 1));
+    setCurrentIndex((prevIndex) =>
+      prevIndex === courses.length - 1 ? 0 : prevIndex + 1
+    );
   };
 
   const swipeHandlers = useSwipeable({
@@ -55,7 +64,13 @@ const FeaturedCourses = () => {
   return (
     <section className="bg-gray-50 py-5 relative overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div {...swipeHandlers} className="relative flex items-center overflow-hidden">
+        <h2 className="text-4xl font-bold text-gray-900 mb-8 text-center">
+          Explore Our Courses
+        </h2>
+        <div
+          {...swipeHandlers}
+          className="relative flex items-center overflow-hidden"
+        >
           {/* Navigation Arrows */}
           <button
             onClick={handlePrev}
@@ -82,7 +97,9 @@ const FeaturedCourses = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                   </div>
                   <div className="p-6">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{course.title}</h3>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                      {course.title}
+                    </h3>
                     <p className="text-gray-600 mb-4">{course.description}</p>
                     <button className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
                       Explore Course
