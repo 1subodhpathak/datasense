@@ -5,7 +5,8 @@ function Preheader() {
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <motion.div
-        className="bg-blue-600 h-12 w-12"
+        className="h-12 w-12"
+        style={{backgroundColor: '#00B8BB'}}
         animate={{
           scale: [1, 2, 2, 1, 1],
           rotate: [0, 0, 180, 180, 0],
