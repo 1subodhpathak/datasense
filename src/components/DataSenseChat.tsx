@@ -86,14 +86,15 @@ const DataSenseChat = () => {
       <div className="flex gap-2">
         <button
           onClick={handleExpand}
-          className="text-white hover:text-gray-200 p-2"
+          className="text-white hover:text-gray-200 p-2 hover:bg-[#00B8BB]"
           title="Expand chat"
         >
           <Maximize2 className="h-5 w-5" />
         </button>
         <button
           onClick={() => setIsMinimized(true)}
-          className="text-white hover:text-gray-200 p-2"
+          className="text-white hover:text-gray-200 p-2 hover:bg-[#00B8BB]"
+          title="Minimize chat"
         >
           <Minimize2 className="h-5 w-5" />
         </button>
@@ -107,7 +108,8 @@ const DataSenseChat = () => {
               },
             ])
           }
-          className="text-white hover:text-gray-200 p-2"
+          className="text-white hover:text-gray-200 p-2 hover:bg-[#00B8BB]"
+          title="Clear chat"
         >
           <X className="h-5 w-5" />
         </button>
