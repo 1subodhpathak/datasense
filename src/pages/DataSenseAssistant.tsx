@@ -9,7 +9,9 @@ import {
   LineChart, 
   Binary, 
   Brain,
-  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Menu,
   Home
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -33,6 +35,7 @@ const DataSenseAssistant = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
   const suggestions = [
     "Tell me about Python for data analysis",
@@ -50,6 +53,38 @@ const DataSenseAssistant = () => {
     { icon: <BookOpen className="w-5 h-5" />, name: "Resources", count: 10 }
   ];
 
+  // Handle clicks outside sidebar to close it on mobile
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isSidebarOpen &&
+        chatContainerRef.current &&
+        !chatContainerRef.current.contains(event.target as Node) &&
+        window.innerWidth < 768
+      ) {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isSidebarOpen]);
+
+  // Set initial sidebar state based on screen size
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsSidebarOpen(true);
+      } else {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -64,6 +99,9 @@ const DataSenseAssistant = () => {
       python: "Python is essential for data science! We cover Python extensively in our courses, including pandas for data manipulation, numpy for numerical operations, and scikit-learn for machine learning. Would you like to explore our Python for Data Science course?",
       "machine learning": "Our Machine Learning course covers everything from basic algorithms to advanced neural networks. The curriculum includes supervised learning, unsupervised learning, and practical projects with real-world datasets. Would you like to know more about our ML course?",
       "data analytics": "Our Data Analytics program teaches you to extract meaningful insights from data. You'll learn descriptive analytics, diagnostic analytics, predictive analytics, and prescriptive analytics. Want to see our course curriculum?",
+      visualization: "Data visualization is crucial for communicating insights effectively. We teach various tools like matplotlib, seaborn, and plotly for creating impactful visualizations. Would you like to see some examples?",
+      statistics: "Statistics is the foundation of data science. Our curriculum covers probability, hypothesis testing, regression analysis, and more. Shall we explore a specific statistics topic?",
+      sql: "SQL is essential for data manipulation and analysis. We cover everything from basic queries to advanced operations like window functions and CTEs. Would you like to practice some SQL queries?",
       course: "We offer several specialized courses including:\n- Data Science Fundamentals\n- Machine Learning Essentials\n- Data Analytics & Visualization\n- Python for Data Science\nWhich area interests you most?",
     };
 
@@ -81,6 +119,11 @@ const DataSenseAssistant = () => {
     setInput("");
     setIsTyping(true);
 
+    // Close sidebar on mobile when sending a message
+    if (window.innerWidth < 768) {
+      setIsSidebarOpen(false);
+    }
+
     setTimeout(() => {
       const response = generateResponse(input);
       setMessages(prev => [...prev, { type: "bot", content: response }]);
@@ -89,9 +132,26 @@ const DataSenseAssistant = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 relative">
+      {/* Overlay for mobile when sidebar is open */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <div className={`${isSidebarOpen ? 'w-64' : 'w-0'} transition-all duration-300 bg-[#006D6F] text-white overflow-hidden`}>
+      <div
+        className={`
+          fixed md:static inset-y-0 left-0 z-30
+          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+          transition-transform duration-300 ease-in-out
+          w-64 bg-[#006D6F] text-white
+          md:block
+        `}
+        ref={chatContainerRef}
+      >
         <div className="p-4">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-2">
@@ -100,10 +160,14 @@ const DataSenseAssistant = () => {
             </div>
             <Button
               variant="ghost"
-              className="text-white hover:bg-[#00B8BB]"
+              className="text-white hover:bg-[#00B8BB] md:flex"
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             >
-              <ChevronDown className="w-5 h-5" />
+              {isSidebarOpen ? (
+                <ChevronLeft className="w-5 h-5" />
+              ) : (
+                <ChevronRight className="w-5 h-5" />
+              )}
             </Button>
           </div>
           
@@ -126,16 +190,20 @@ const DataSenseAssistant = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col w-full">
         <div className="bg-[#006D6F] p-4 flex justify-between items-center">
-          <Button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            variant="ghost"
-            className="text-white hover:bg-[#00B8BB] md:hidden"
-          >
-            <ChevronDown className="w-5 h-5" />
-          </Button>
-          <h2 className="text-white text-xl font-semibold">DataSense Assistant</h2>
+          <div className="flex items-center space-x-4">
+            <Button
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              variant="ghost"
+              className={`text-white hover:bg-[#00B8BB] ${
+                !isSidebarOpen ? 'md:flex' : 'md:hidden'
+              }`}
+            >
+              <Menu className="w-5 h-5" />
+            </Button>
+            <h2 className="text-white text-xl font-semibold">DataSense Assistant</h2>
+          </div>
           <Button
             onClick={() => navigate("/")}
             variant="ghost"
@@ -151,7 +219,7 @@ const DataSenseAssistant = () => {
               key={index}
               className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
             >
-              <div className={`flex items-start space-x-2 max-w-[70%] ${
+              <div className={`flex items-start space-x-2 max-w-[85%] md:max-w-[70%] ${
                 message.type === "user" ? "flex-row-reverse" : "flex-row"
               }`}>
                 <div className={`p-2 rounded-lg ${
@@ -217,8 +285,9 @@ const DataSenseAssistant = () => {
                   type="submit"
                   className="text-white hover:bg-[#15A3C7] px-4"
                   style={{ backgroundColor: "#00B8BB" }}
+                  title="Send"
                 >
-                  <Send className="h-5 w-5" />
+                  <Send className="h-5" />
                 </Button>
               </div>
             </div>
