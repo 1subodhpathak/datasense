@@ -20,7 +20,7 @@ const Navbar = () => {
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <img src="/assets/Datasense-logo.jpg" alt="DataSense" className="h-8" />
+            <img src="/assets/datasense-logo2.jpg" alt="DataSense" className="h-8" />
             {/* <span className="ml-2 text-2xl font-bold" style={{ color: '#00B8BB' }}>DataSense</span> */}
           </div>
 
